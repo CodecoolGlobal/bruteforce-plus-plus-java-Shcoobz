@@ -1,6 +1,7 @@
 package com.codecool.bfpp;
 
 import com.codecool.bfpp.database.BruteForceAttemptRepository;
+import com.codecool.bfpp.database.ConfigReader;
 import com.codecool.bfpp.database.Database;
 import com.codecool.bfpp.database.IdentificationRepository;
 import com.codecool.bfpp.initialize.TableInitializer;
@@ -14,14 +15,23 @@ import com.codecool.bfpp.ui.BruteForceUi;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Scanner;
 
 public class Application {
     public static void main(String[] args) {
-        Database database = new Database(
+/*        Database database = new Database(
                 "jdbc:postgresql://localhost:5432/bruteforce_plus_plus",
                 "postgres",
-                "postgres");
+                "postgres");*/
+
+        Properties prop = ConfigReader.readDatabaseConfig("config.properties");
+        String url = prop.getProperty("db.url");
+        String user = prop.getProperty("db.user");
+        String password = prop.getProperty("db.password");
+
+        Database database = new Database(url, user, password);
+
         Map<String, String> tables = Map.of(
                 "identification", TableStatements.IDENTIFICATION,
                 "brute_force_attempt", TableStatements.BRUTE_FORCE_ATTEMPT

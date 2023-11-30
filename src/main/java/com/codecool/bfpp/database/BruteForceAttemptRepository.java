@@ -15,8 +15,8 @@ public class BruteForceAttemptRepository {
     }
 
     public List<BruteForceAttempt> findAll() {
-        // Write the select statements here!
-        String template = "";
+        String template = "SELECT id, type, username, password, tries, duration FROM brute_force_attempt";
+
         try (Connection connection = database.getConnection();
              Statement statement = connection.createStatement();
              ResultSet resultSet = statement.executeQuery(template)) {
@@ -42,8 +42,8 @@ public class BruteForceAttemptRepository {
     }
 
     public void save(BruteForceAttempt bruteForceAttempt) {
-        // Write the insert statements here!
-        String template = "";
+        String template = "INSERT INTO brute_force_attempt (type, username, password, tries, duration) VALUES (?, ?, ?, ?, ?)";
+
         try (Connection connection = database.getConnection();
              PreparedStatement statement = connection.prepareStatement(template)) {
             prepare(bruteForceAttempt, statement);

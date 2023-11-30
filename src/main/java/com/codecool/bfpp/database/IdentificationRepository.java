@@ -15,8 +15,8 @@ public class IdentificationRepository {
     }
 
     public Optional<Identification> findOneByUsername(String username) {
-        // Write the select statements here!
-        String template = "";
+        String template = "SELECT username, password FROM identification WHERE username = ?";
+
         try (Connection connection = database.getConnection();
              PreparedStatement statement = connection.prepareStatement(template)) {
             statement.setString(1, username);
@@ -34,8 +34,8 @@ public class IdentificationRepository {
     }
 
     public List<Identification> findAll() {
-        // Write the select statements here!
-        String query = "";
+        String query = "SELECT username, password FROM identification";
+
         try (Connection connection = database.getConnection();
              Statement statement = connection.createStatement();
              ResultSet resultSet = statement.executeQuery(query)) {
@@ -57,13 +57,14 @@ public class IdentificationRepository {
         );
     }
 
+    // TODO: fixed ??  org.postgresql.util.PSQLException: The column index is out of range: 1, number of columns: 0.
     public void save(Identification identification) {
         if (findOneByUsername(identification.username()).isPresent()) {
             return;
         }
 
-        // Write the insert statements here!
-        String template = "";
+        String template = "INSERT INTO identification (username, password) VALUES (?, ?)";
+
         try (Connection connection = database.getConnection();
              PreparedStatement statement = connection.prepareStatement(template)) {
             prepare(identification, statement);
